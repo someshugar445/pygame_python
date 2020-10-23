@@ -1,29 +1,35 @@
 import pygame
-import time
 import random
-pygame.init()
-display_width = 800
-display_height = 600
+from win32api import GetSystemMetrics
+from pygame.locals import *
+import os
 
-gameDisplay = pygame.display.set_mode((display_width, display_height))
+
+pygame.init()
+display_width = GetSystemMetrics(0)
+display_height = GetSystemMetrics(1)
+
+gameDisplay = pygame.display.set_mode((display_width, display_height), RESIZABLE)
 pygame.display.set_caption('Snake Game')
 
 black = (0, 0, 0)
 brown = (230, 160, 98)
 snake_width = 73
 red = (200, 0, 0)
-green = (0, 200, 0)
+green = (72, 160, 110)
 
 bright_red = (255, 0, 0)
-bright_green = (0, 255, 0)
+bright_green = (100, 188, 136)
 
 clock = pygame.time.Clock()
 crashed = False
 snake_img = pygame.image.load('snake.png')
 
+def things1(thingx, thingy, thingw, thingh, color):
+    pygame.draw.rect(gameDisplay, color, [thingx, thingy, thingw, thingh])
 
-def things(thingx, thingy, thingw, thingh, color):
-    pygame.draw.rect(gameDisplay, red, [thingx, thingy, thingw, thingh])
+def things2(thingx, thingy, thingw, thingh, color):
+    pygame.draw.rect(gameDisplay, color, [thingx, thingy, thingw, thingh])
 
 
 def snake(x, y):
@@ -36,19 +42,16 @@ def text_objects(text, font):
 
 
 def crash():
-    largeText = pygame.font.SysFont("comicsansms", 115)
+    largeText = pygame.font.SysFont("freesansbold.ttf", 115)
     TextSurf, TextRect = text_objects("You Died", largeText)
-    TextRect.center = ((display_width / 2), (display_height / 2))
+    TextRect.center = ((display_width / 2), (display_height / 4))
     gameDisplay.blit(TextSurf, TextRect)
 
     while True:
         for event in pygame.event.get():
-            # print(event)
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-
-        # gameDisplay.fill(white)
 
         button("Restart", 150, 450, 100, 50, green, bright_green, game_loop)
         button("Exit", 550, 450, 100, 50, red, bright_red, quitgame)
@@ -60,16 +63,15 @@ def crash():
 def button(msg, x, y, w, h, ic, ac, action=None):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
-    # print(click)
     if x + w > mouse[0] > x and y + h > mouse[1] > y:
         pygame.draw.rect(gameDisplay, ac, (x, y, w, h))
         if click[0] == 1 and action != None:
             action()
     else:
         pygame.draw.rect(gameDisplay, ic, (x, y, w, h))
-    smallText = pygame.font.SysFont("comicsansms", 20)
+    smallText = pygame.font.SysFont("freesansbold.ttf", 40)
     textSurf, textRect = text_objects(msg, smallText)
-    textRect.center = ((x + (w / 2)), (y + (h / 2)))
+    textRect.center = ((display_width / 2), (display_height / 2))
     gameDisplay.blit(textSurf, textRect)
 
 
@@ -84,19 +86,16 @@ def unpause():
 
 
 def paused():
-    largeText = pygame.font.SysFont("comicsansms", 115)
+    largeText = pygame.font.SysFont("freesansbold.ttf", 115)
     TextSurf, TextRect = text_objects("Paused", largeText)
     TextRect.center = ((display_width / 2), (display_height / 2))
     gameDisplay.blit(TextSurf, TextRect)
 
     while pause:
         for event in pygame.event.get():
-            # print(event)
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-
-        # gameDisplay.fill(white)
 
         button("Unpause", 150, 450, 100, 50, green, bright_green, unpause)
         button("Exit", 550, 450, 100, 50, red, bright_red, quitgame)
@@ -104,10 +103,12 @@ def paused():
         pygame.display.update()
         clock.tick(15)
 
-
 def game_intro():
     intro = True
-
+    x = display_width
+    y = display_height
+    logo = pygame.image.load(os.path.join("snake.png")).convert()
+    logo_rect = logo.get_rect(center = gameDisplay.get_rect().center)
     while intro:
         for event in pygame.event.get():
             # print(event)
@@ -116,33 +117,27 @@ def game_intro():
                 quit()
 
         gameDisplay.fill(brown)
-        largeText = pygame.font.SysFont("comicsansms", 115)
-        TextSurf, TextRect = text_objects("Snake Game", largeText)
-        TextRect.center = ((display_width / 2), (display_height / 2))
+        largeText = pygame.font.SysFont("freesansbold.ttf", 80)
+        TextSurf, TextRect = text_objects("Lets Play!!!", largeText)
+        TextRect.center = ((display_width / 2), (display_height / 4))
         gameDisplay.blit(TextSurf, TextRect)
 
-        button("Start", 150, 450, 100, 50, green, bright_green, game_loop)
-        button("Finish!!!", 550, 450, 100, 50, red, bright_red, quitgame)
-
+        button("Start", 540, 450, 200, 50, green, bright_green, game_loop)
+        # button("Finish!!!", 550, 450, 100, 50, red, bright_red, quitgame)
+        gameDisplay.blit(logo, logo_rect)
         pygame.display.update()
         clock.tick(15)
-
         mouse = pygame.mouse.get_pos()
-
-        # print(mouse)
-
         if 150 + 100 > mouse[0] > 150 and 450 + 50 > mouse[1] > 450:
             pygame.draw.rect(gameDisplay, bright_green, (150, 450, 100, 50))
         else:
-            pygame.draw.rect(gameDisplay, green, (150, 450, 100, 50))
+            pygame.draw.rect(gameDisplay, green, (150, 750, 100, 50))
 
         smallText = pygame.font.Font("freesansbold.ttf", 20)
-        textSurf, textRect = text_objects("Start", smallText)
-        textRect.center = ((150 + (100 / 2)), (450 + (50 / 2)))
+        textSurf, textRect = text_objects("Start Game", smallText)
+        textRect.center = (640, 480)
         gameDisplay.blit(textSurf, textRect)
-
-        pygame.draw.rect(gameDisplay, red, (550, 450, 100, 50))
-
+        # pygame.draw.rect(gameDisplay, red, (550, 450, 100, 50))
         pygame.display.update()
         clock.tick(15)
 
@@ -153,7 +148,8 @@ def game_loop():
 
     x_change = 0
 
-    thing_startx = random.randrange(0, display_width)
+    thing1_startx = random.randrange(0, display_width)
+    thing2_startx = random.randrange(0, display_width)
     thing_starty = -600
     thing_speed = 7
     thing_width = 100
@@ -181,7 +177,8 @@ def game_loop():
 
         gameDisplay.fill(brown)
 
-        things(thing_startx, thing_starty, thing_width, thing_height, black)
+        things1(thing1_startx, thing_starty, thing_width, thing_height, black)
+        things2(thing2_startx, thing_starty, thing_width, thing_height, black)
         thing_starty += thing_speed
         snake(x, y)
 
@@ -190,12 +187,16 @@ def game_loop():
 
         if thing_starty > display_height:
             thing_starty = 0 - thing_height
-            thing_startx = random.randrange(0, display_width)
+            thing1_startx = random.randrange(0, display_width)
+            thing2_startx = random.randrange(0, display_width)
 
         if y < thing_starty + thing_height:
             print('y crossover')
 
-            if x > thing_startx and x < thing_startx + thing_width or x + snake_width > thing_startx and x + snake_width < thing_startx + thing_width:
+            if thing1_startx < x < thing1_startx + thing_width or thing1_startx < x + snake_width < thing1_startx + thing_width:
+                print('x crossover')
+                crash()
+            elif thing2_startx < x < thing2_startx + thing_width or thing2_startx < x + snake_width < thing2_startx + thing_width:
                 print('x crossover')
                 crash()
 
