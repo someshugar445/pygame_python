@@ -15,7 +15,7 @@ pygame.display.set_caption('Snake Game')
 black = (0, 0, 0)
 brown = (230, 160, 98)
 snake_width = 73
-red = (200, 0, 0)
+red = (220,20,60)
 green = (72, 160, 110)
 
 bright_red = (255, 0, 0)
@@ -24,6 +24,8 @@ bright_green = (100, 188, 136)
 clock = pygame.time.Clock()
 crashed = False
 snake_img = pygame.image.load('snake.png')
+background_image = pygame.image.load("grass.jpg").convert()
+
 
 def things1(thingx, thingy, thingw, thingh, color):
     pygame.draw.rect(gameDisplay, color, [thingx, thingy, thingw, thingh])
@@ -42,7 +44,7 @@ def text_objects(text, font):
 
 
 def crash():
-    largeText = pygame.font.SysFont("freesansbold.ttf", 115)
+    largeText = pygame.font.SysFont("freesansbold.ttf", 100)
     TextSurf, TextRect = text_objects("You Died", largeText)
     TextRect.center = ((display_width / 2), (display_height / 4))
     gameDisplay.blit(TextSurf, TextRect)
@@ -53,8 +55,8 @@ def crash():
                 pygame.quit()
                 quit()
 
-        button("Restart", 150, 450, 100, 50, green, bright_green, game_loop)
-        button("Exit", 550, 450, 100, 50, red, bright_red, quitgame)
+        button("Restart Game", 540, 330, 200, 50, red, bright_red, game_loop)
+        # button("Exit", 550, 450, 100, 50, red, bright_red, quitgame)
 
         pygame.display.update()
         clock.tick(15)
@@ -97,8 +99,8 @@ def paused():
                 pygame.quit()
                 quit()
 
-        button("Unpause", 150, 450, 100, 50, green, bright_green, unpause)
-        button("Exit", 550, 450, 100, 50, red, bright_red, quitgame)
+        button("Unpause", 540, 450, 200, 50, green, bright_green, unpause)
+        # button("Exit", 550, 450, 100, 50, red, bright_red, quitgame)
 
         pygame.display.update()
         clock.tick(15)
@@ -107,6 +109,7 @@ def game_intro():
     intro = True
     x = display_width
     y = display_height
+    gameDisplay.blit(background_image, [0, 0])
     logo = pygame.image.load(os.path.join("snake.png")).convert()
     logo_rect = logo.get_rect(center = gameDisplay.get_rect().center)
     while intro:
@@ -116,7 +119,7 @@ def game_intro():
                 pygame.quit()
                 quit()
 
-        gameDisplay.fill(brown)
+        gameDisplay.blit(background_image, [0, 0])
         largeText = pygame.font.SysFont("freesansbold.ttf", 80)
         TextSurf, TextRect = text_objects("Lets Play!!!", largeText)
         TextRect.center = ((display_width / 2), (display_height / 4))
@@ -175,7 +178,7 @@ def game_loop():
 
         x += x_change
 
-        gameDisplay.fill(brown)
+        gameDisplay.blit(background_image, [0, 0])
 
         things1(thing1_startx, thing_starty, thing_width, thing_height, black)
         things2(thing2_startx, thing_starty, thing_width, thing_height, black)
