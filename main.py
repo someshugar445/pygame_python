@@ -13,7 +13,8 @@ gameDisplay = pygame.display.set_mode((display_width, display_height), RESIZABLE
 pygame.display.set_caption('Snake Game')
 
 black = (0, 0, 0)
-brown = (230, 160, 98)
+# brown = (230, 160, 98)
+flame = (226, 88, 34)
 snake_width = 73
 red = (220,20,60)
 green = (72, 160, 110)
@@ -112,6 +113,8 @@ def game_intro():
     gameDisplay.blit(background_image, [0, 0])
     logo = pygame.image.load(os.path.join("snake.png")).convert()
     logo_rect = logo.get_rect(center = gameDisplay.get_rect().center)
+    font = pygame.font.Font('freesansbold.ttf', 32)
+
     while intro:
         for event in pygame.event.get():
             # print(event)
@@ -120,10 +123,14 @@ def game_intro():
                 quit()
 
         gameDisplay.blit(background_image, [0, 0])
-        largeText = pygame.font.SysFont("freesansbold.ttf", 80)
-        TextSurf, TextRect = text_objects("Lets Play!!!", largeText)
-        TextRect.center = ((display_width / 2), (display_height / 4))
-        gameDisplay.blit(TextSurf, TextRect)
+        # largeText = pygame.font.SysFont("freesansbold.ttf", 100)
+        # TextSurf, TextRect = text_objects("SNAKE & FIRE !!!", largeText)
+        # TextRect.center = ((display_width / 2), (display_height / 4))
+
+        title_text = font.render('SNAKE & FIRE !!!', True, red, flame)
+        textRect = title_text.get_rect()
+        textRect.center = ((display_width / 2), (display_height / 4))
+        gameDisplay.blit(title_text, textRect)
 
         button("Start", 540, 450, 200, 50, green, bright_green, game_loop)
         # button("Finish!!!", 550, 450, 100, 50, red, bright_red, quitgame)
@@ -180,8 +187,8 @@ def game_loop():
 
         gameDisplay.blit(background_image, [0, 0])
 
-        things1(thing1_startx, thing_starty, thing_width, thing_height, black)
-        things2(thing2_startx, thing_starty, thing_width, thing_height, black)
+        things1(thing1_startx, thing_starty, thing_width, thing_height, flame)
+        things2(thing2_startx, thing_starty, thing_width, thing_height, flame)
         thing_starty += thing_speed
         snake(x, y)
 
