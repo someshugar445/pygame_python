@@ -27,7 +27,6 @@ crashed = False
 snake_img = pygame.image.load('snake.png')
 background_image = pygame.image.load("grass.jpg").convert()
 
-
 def things1(thingx, thingy, thingw, thingh, color):
     pygame.draw.rect(gameDisplay, color, [thingx, thingy, thingw, thingh])
 
@@ -114,7 +113,9 @@ def game_intro():
     logo = pygame.image.load(os.path.join("logo.png")).convert()
     logo_rect = logo.get_rect(center = gameDisplay.get_rect().center)
     font = pygame.font.Font('freesansbold.ttf', 32)
-
+    s = 'sound'
+    music = pygame.mixer.music.load(os.path.join(s, 'EpicTVTheme.mp3'))
+    pygame.mixer.music.play(-1)
     while intro:
         for event in pygame.event.get():
             # print(event)
@@ -126,6 +127,10 @@ def game_intro():
         # largeText = pygame.font.SysFont("freesansbold.ttf", 100)
         # TextSurf, TextRect = text_objects("SNAKE & FIRE !!!", largeText)
         # TextRect.center = ((display_width / 2), (display_height / 4))
+
+        # pygame.mixer.init()
+        # pygame.mixer.music.load("sound/DarkMystery.mp3")
+        # pygame.mixer.music.play(-1, 0.0)
 
         title_text = font.render('SNAKE & FIRE !!!', True, red, flame)
         textRect = title_text.get_rect()
