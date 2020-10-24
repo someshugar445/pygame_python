@@ -17,10 +17,10 @@ black = (0, 0, 0)
 flame = (226, 88, 34)
 snake_width = 73
 red = (220,20,60)
-green = (72, 160, 110)
+green = (34,139,34)
 
 bright_red = (255, 0, 0)
-bright_green = (100, 188, 136)
+bright_green = (50,205,50)
 
 clock = pygame.time.Clock()
 crashed = False
@@ -111,7 +111,7 @@ def game_intro():
     x = display_width
     y = display_height
     gameDisplay.blit(background_image, [0, 0])
-    logo = pygame.image.load(os.path.join("snake.png")).convert()
+    logo = pygame.image.load(os.path.join("logo.png")).convert()
     logo_rect = logo.get_rect(center = gameDisplay.get_rect().center)
     font = pygame.font.Font('freesansbold.ttf', 32)
 
@@ -132,7 +132,7 @@ def game_intro():
         textRect.center = ((display_width / 2), (display_height / 4))
         gameDisplay.blit(title_text, textRect)
 
-        button("Start", 540, 450, 200, 50, green, bright_green, game_loop)
+        button("Start Game", 540, 450, 200, 50, green, bright_green, game_loop)
         # button("Finish!!!", 550, 450, 100, 50, red, bright_red, quitgame)
         gameDisplay.blit(logo, logo_rect)
         pygame.display.update()
