@@ -10,7 +10,7 @@ display_width = GetSystemMetrics(0)
 display_height = GetSystemMetrics(1)
 
 gameDisplay = pygame.display.set_mode((display_width, display_height), RESIZABLE)
-pygame.display.set_caption('Snake Game')
+pygame.display.set_caption('Snake and Fire')
 
 black = (0, 0, 0)
 # brown = (230, 160, 98)
@@ -44,19 +44,33 @@ def text_objects(text, font):
 
 
 def crash():
-    largeText = pygame.font.SysFont("freesansbold.ttf", 100)
-    TextSurf, TextRect = text_objects("You Died", largeText)
-    TextRect.center = ((display_width / 2), (display_height / 4))
-    gameDisplay.blit(TextSurf, TextRect)
+    # largeText = pygame.font.SysFont("Verdana", 60)
+    # TextSurf, TextRect = text_objects("You Died", largeText)
+    # TextRect.center = ((display_width / 2), (display_height / 4))
+    # gameDisplay.blit(TextSurf, TextRect)
+    font = pygame.font.SysFont('Verdana', 60)
+    title_text = font.render('You Died !!!', True, red, flame)
+    textRect = title_text.get_rect()
+    textRect.center = ((display_width / 2), (display_height / 4))
+    gameDisplay.blit(title_text, textRect)
 
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+        button(None, 400, 330, 200, 50, green, bright_green, game_loop)
+        button(None, 640, 330, 200, 50, red, bright_red, quitgame)
 
-        button("Restart Game", 540, 330, 200, 50, red, bright_red, game_loop)
-        # button("Exit", 550, 450, 100, 50, red, bright_red, quitgame)
+        smallText = pygame.font.SysFont("Verdana", 28)
+        textSurf, textRect = text_objects("Restart Game", smallText)
+        textRect.center = (500, 355)
+        gameDisplay.blit(textSurf, textRect)
+
+        smallText = pygame.font.SysFont("Verdana", 28)
+        textSurf, textRect = text_objects("Exit Game", smallText)
+        textRect.center = (740, 355)
+        gameDisplay.blit(textSurf, textRect)
 
         pygame.display.update()
         clock.tick(15)
@@ -71,7 +85,7 @@ def button(msg, x, y, w, h, ic, ac, action=None):
             action()
     else:
         pygame.draw.rect(gameDisplay, ic, (x, y, w, h))
-    smallText = pygame.font.SysFont("freesansbold.ttf", 40)
+    smallText = pygame.font.SysFont('Verdana', 30)
     textSurf, textRect = text_objects(msg, smallText)
     textRect.center = ((display_width / 2), (display_height / 2))
     gameDisplay.blit(textSurf, textRect)
@@ -88,7 +102,7 @@ def unpause():
 
 
 def paused():
-    largeText = pygame.font.SysFont("freesansbold.ttf", 115)
+    largeText = pygame.font.SysFont("Verdana", 40)
     TextSurf, TextRect = text_objects("Paused", largeText)
     TextRect.center = ((display_width / 2), (display_height / 2))
     gameDisplay.blit(TextSurf, TextRect)
@@ -100,7 +114,7 @@ def paused():
                 quit()
 
         button("Unpause", 540, 450, 200, 50, green, bright_green, unpause)
-        # button("Exit", 550, 450, 100, 50, red, bright_red, quitgame)
+        button("Exit", 550, 450, 100, 50, red, bright_red, quitgame)
 
         pygame.display.update()
         clock.tick(15)
@@ -112,7 +126,7 @@ def game_intro():
     gameDisplay.blit(background_image, [0, 0])
     logo = pygame.image.load(os.path.join("logo.png")).convert()
     logo_rect = logo.get_rect(center = gameDisplay.get_rect().center)
-    font = pygame.font.Font('freesansbold.ttf', 32)
+    font = pygame.font.SysFont('Verdana', 60)
     s = 'sound'
     music = pygame.mixer.music.load(os.path.join(s, 'EpicTVTheme.mp3'))
     pygame.mixer.music.play(-1)
@@ -137,8 +151,7 @@ def game_intro():
         textRect.center = ((display_width / 2), (display_height / 4))
         gameDisplay.blit(title_text, textRect)
 
-        button("Start Game", 540, 450, 200, 50, green, bright_green, game_loop)
-        # button("Finish!!!", 550, 450, 100, 50, red, bright_red, quitgame)
+        button(None, 540, 450, 200, 50, green, bright_green, game_loop)
         gameDisplay.blit(logo, logo_rect)
         pygame.display.update()
         clock.tick(15)
@@ -148,7 +161,7 @@ def game_intro():
         else:
             pygame.draw.rect(gameDisplay, green, (150, 750, 100, 50))
 
-        smallText = pygame.font.Font("freesansbold.ttf", 20)
+        smallText = pygame.font.SysFont("Verdana", 30)
         textSurf, textRect = text_objects("Start Game", smallText)
         textRect.center = (640, 480)
         gameDisplay.blit(textSurf, textRect)
